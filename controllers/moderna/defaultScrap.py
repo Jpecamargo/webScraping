@@ -1,5 +1,5 @@
 import pandas as pd
-from modules.webScrap.main import webScraping
+from modules.webScrap.main import webScraping, fill
 
 
 def defaultScrap(url, category):
@@ -27,6 +27,9 @@ def defaultScrap(url, category):
         None,
         'image'
     )
+
+    qtde = len(name)
+    fill(price, qtde, 'Indisponnível')
 
     df = pd.DataFrame({'Product': name, 'Price': price, 'Image': image, 'Category': category})
     data = df.to_dict('records')
