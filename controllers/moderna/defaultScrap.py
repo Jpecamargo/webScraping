@@ -1,8 +1,12 @@
 import pandas as pd
-from modules.webScrap.main import webScraping, fill
+from modules.webScrap.main import getUrls, webScraping, fill
+
+urlJoin = '?page='
+anchor = 'button'
+anchorClass = 'vtex-button bw1 ba fw5 v-mid relative pa0 lh-solid br2 min-h-small t-action--small bg-action-primary b--action-primary c-on-action-primary hover-bg-action-primary hover-b--action-primary hover-c-on-action-primary pointer'
 
 
-def defaultScrap(url, category):
+def scrap(url, category):
     name = webScraping(
         url,
         'h3',
@@ -33,4 +37,15 @@ def defaultScrap(url, category):
 
     df = pd.DataFrame({'Product': name, 'Price': price, 'Image': image, 'Category': category})
     data = df.to_dict('records')
+    return data
+
+
+def defaultScrap(url, category):
+    urls = getUrls(url, urlJoin, anchor, anchorClass)
+    data = []
+
+    for item in urls:
+        response = scrap(item, category)
+        data = data + response
+
     return data
